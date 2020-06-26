@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="db_sahaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="tbl_odeme">
+    <Key>
+      <PropertyRef Name="ODEME_ID" />
+    </Key>
+    <Property Name="ODEME_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ODEME_REZ_ID" Type="int" />
+    <Property Name="ODEME_SAHA_ID" Type="int" />
+    <Property Name="DURUM" Type="bit" />
+    <Property Name="ODEME_UCRET" Type="smallmoney" />
+  </EntityType>
+  <EntityType Name="tbl_rezervasyon">
+    <Key>
+      <PropertyRef Name="REZ_ID" />
+    </Key>
+    <Property Name="REZ_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="REZ_SAHA_ID" Type="int" />
+    <Property Name="TARIH" Type="nvarchar" MaxLength="50" />
+    <Property Name="SAAT" Type="nvarchar" MaxLength="50" />
+    <Property Name="REZ_SAHIP" Type="nvarchar" MaxLength="50" />
+    <Property Name="ACIKLAMA" Type="nvarchar" MaxLength="50" />
+    <Property Name="REZ_UCRET" Type="smallmoney" />
+  </EntityType>
+  <EntityType Name="tbl_saha">
+    <Key>
+      <PropertyRef Name="SAHA_ID" />
+    </Key>
+    <Property Name="SAHA_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SAHA_ADI" Type="nvarchar" MaxLength="50" />
+    <Property Name="UCRET" Type="smallmoney" />
+    <Property Name="KAPASITE" Type="int" />
+  </EntityType>
+  <Association Name="FK_tbl_odeme_tbl_rezervasyon">
+    <End Role="tbl_rezervasyon" Type="Self.tbl_rezervasyon" Multiplicity="0..1" />
+    <End Role="tbl_odeme" Type="Self.tbl_odeme" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_rezervasyon">
+        <PropertyRef Name="REZ_ID" />
+      </Principal>
+      <Dependent Role="tbl_odeme">
+        <PropertyRef Name="ODEME_REZ_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_odeme_tbl_saha">
+    <End Role="tbl_saha" Type="Self.tbl_saha" Multiplicity="0..1" />
+    <End Role="tbl_odeme" Type="Self.tbl_odeme" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_saha">
+        <PropertyRef Name="SAHA_ID" />
+      </Principal>
+      <Dependent Role="tbl_odeme">
+        <PropertyRef Name="ODEME_SAHA_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_rezervasyon_tbl_saha">
+    <End Role="tbl_saha" Type="Self.tbl_saha" Multiplicity="0..1" />
+    <End Role="tbl_rezervasyon" Type="Self.tbl_rezervasyon" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_saha">
+        <PropertyRef Name="SAHA_ID" />
+      </Principal>
+      <Dependent Role="tbl_rezervasyon">
+        <PropertyRef Name="REZ_SAHA_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="db_sahaModelStoreContainer">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_odeme" EntityType="Self.tbl_odeme" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_rezervasyon" EntityType="Self.tbl_rezervasyon" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_saha" EntityType="Self.tbl_saha" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_tbl_odeme_tbl_rezervasyon" Association="Self.FK_tbl_odeme_tbl_rezervasyon">
+      <End Role="tbl_rezervasyon" EntitySet="tbl_rezervasyon" />
+      <End Role="tbl_odeme" EntitySet="tbl_odeme" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_odeme_tbl_saha" Association="Self.FK_tbl_odeme_tbl_saha">
+      <End Role="tbl_saha" EntitySet="tbl_saha" />
+      <End Role="tbl_odeme" EntitySet="tbl_odeme" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_rezervasyon_tbl_saha" Association="Self.FK_tbl_rezervasyon_tbl_saha">
+      <End Role="tbl_saha" EntitySet="tbl_saha" />
+      <End Role="tbl_rezervasyon" EntitySet="tbl_rezervasyon" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
